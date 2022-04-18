@@ -8,7 +8,7 @@ let helper = require("../helpers/helpers"),
     util = require('util'),
     unlinkFile = util.promisify(fs.unlink),
     BadRequestError = require('../errors/badRequestError');
-    const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
 let addCustomer = async (adminid, req) => {
     let body = req.body;
@@ -20,29 +20,29 @@ let addCustomer = async (adminid, req) => {
     optionalFiled.forEach(x => {
         updatedData[x] = body[x]
     });
-    
+
     if (req.files.pan_card && req.files.pan_card.length > 0) {
-     //   const result = await s3Helper.uploadFile(req.files.pan_card[0])
-     updatedData["pan_card"] = req.files.pan_card[0].filename     
+        //   const result = await s3Helper.uploadFile(req.files.pan_card[0])
+        updatedData["pan_card"] = req.files.pan_card[0].filename
     }
     if (req.files.aadhar_card && req.files.aadhar_card.length > 0) {
         //   const result = await s3Helper.uploadFile(req.files.aadhar_card[0])
-        updatedData["aadhar_card"] = req.files.aadhar_card[0].filename     
-       }
-       if (req.files.residential_latest_bill && req.files.residential_latest_bill.length > 0) {
+        updatedData["aadhar_card"] = req.files.aadhar_card[0].filename
+    }
+    if (req.files.residential_latest_bill && req.files.residential_latest_bill.length > 0) {
         //   const result = await s3Helper.uploadFile(req.files.residential_latest_bill[0])
-        updatedData["residential_latest_bill"] = req.files.residential_latest_bill[0].filename     
-       }
-       if (req.files.property_tax_receipt && req.files.property_tax_receipt.length > 0) {
+        updatedData["residential_latest_bill"] = req.files.residential_latest_bill[0].filename
+    }
+    if (req.files.property_tax_receipt && req.files.property_tax_receipt.length > 0) {
         //   const result = await s3Helper.uploadFile(req.files.property_tax_receipt[0])
-        updatedData["property_tax_receipt"] = req.files.property_tax_receipt[0].filename     
-       }
+        updatedData["property_tax_receipt"] = req.files.property_tax_receipt[0].filename
+    }
     await CustomerModel.create(updatedData);
-       return true
-    
+    return true
+
 }
 
-module.exports = {    
+module.exports = {
     addCustomer: addCustomer
-    
+
 };
