@@ -7,7 +7,8 @@ let express = require("express"),
     validateAccess = require('../policies/Validate_request_access');
 
 
-router.post("/add_customer",validateAccess.isValidAdmin,fileUploadHelper.uploadUserProfileImage.fields([{ name: 'pan_card'},{ name: 'aadhar_card'},{ name: 'residential_latest_bill'},{ name: 'property_tax_receipt'}]), controller.addCustomer);
+router.post("/add_customer",validateAccess.isValidAdmin,fileUploadHelper.uploadUserProfileImage.fields([{ name: 'pan_card'},{ name: 'aadhar_card'},{ name: 'residential_latest_bill'},{ name: 'property_tax_receipt'},{ name: 'passport_photo'}]), controller.addCustomer);
+router.post("/get_customer",validateAccess.isValidAdmin, controller.getCustomer);
 
 
 

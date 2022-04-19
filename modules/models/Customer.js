@@ -14,7 +14,9 @@ module.exports = sequelize_mysql.define("customer",
         },
         address: {
             type: Sequelize.STRING,
-            unique: true            
+        },
+        office_address: {
+            type: Sequelize.STRING,          
         },
         birthdate: {
             type: Sequelize.STRING, 
@@ -24,9 +26,12 @@ module.exports = sequelize_mysql.define("customer",
         },
         email: {
             type: Sequelize.STRING,
-            unique: true            
+          
         },
         education: {
+            type: Sequelize.STRING, 
+        },
+        experience: {
             type: Sequelize.STRING, 
         },
         marital_status: {
@@ -34,8 +39,7 @@ module.exports = sequelize_mysql.define("customer",
             values: ['married', 'unmarried', 'divorced', 'widowed'],
         },
         spouse_name: {
-            type: Sequelize.STRING,
-            unique: true            
+            type: Sequelize.STRING,            
         },
         mother_name: {
             type: Sequelize.STRING, 
@@ -43,9 +47,11 @@ module.exports = sequelize_mysql.define("customer",
         notes: {
             type: Sequelize.STRING,            
         },
-        pan_card: {
+        passport_photo: {
             type: Sequelize.STRING,
-            unique: true            
+        },
+        pan_card: {
+            type: Sequelize.STRING, 
         },
         aadhar_card: {
             type: Sequelize.STRING, 
@@ -54,6 +60,24 @@ module.exports = sequelize_mysql.define("customer",
             type: Sequelize.STRING, 
         },
         property_tax_receipt: {
+            type: Sequelize.STRING, 
+        },
+        passport_photo: {
+            type: Sequelize.STRING,
+        },
+        pan_card_bucket_key: {
+            type: Sequelize.STRING, 
+        },
+        aadhar_card_bucket_key: {
+            type: Sequelize.STRING, 
+        },
+        residential_latest_bill_bucket_key: {
+            type: Sequelize.STRING, 
+        },
+        property_tax_receipt_bucket_key: {
+            type: Sequelize.STRING, 
+        },        
+        passport_photo_bucket_key: {
             type: Sequelize.STRING, 
         },        
         createdAt: {
