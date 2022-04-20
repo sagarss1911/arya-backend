@@ -12,7 +12,7 @@ let helper = require("../helpers/helpers"),
 const { v4: uuidv4 } = require('uuid');
 
 let addCustomer = async (adminid, req) => {
-    let body = req.body;
+    let body = req.body.body ? JSON.parse(req.body.body) : req.body;
     if (helper.undefinedOrNull(body)) {
         throw new BadRequestError(req.t("body_empty"));
     }
