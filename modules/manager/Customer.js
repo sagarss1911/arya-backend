@@ -93,9 +93,115 @@ let getCustomer = async (adminid, req) => {
 
 }
 
+let updateCustomer = async (adminid, req,id) => {
+    if(!id)
+    {
+        throw new BadRequestError("Invalid Record");
+    }
+    let ExistingCustomer = await CustomerModel.findOne({
+        where: {id:id},        
+        order: [['id', 'DESC']],
+        raw: true
+    });
+    if(!ExistingCustomer)
+    {
+        throw new BadRequestError("Invalid Record");
+    }
+    let body = req.body.body ? JSON.parse(req.body.body) : req.body;
+    if (helper.undefinedOrNull(body)) {
+        throw new BadRequestError(req.t("body_empty"));
+    }
+    let updatedData = {}
+    let optionalFiled = ['name', 'address', 'birthdate', 'mobile_no', 'email', 'education', 'marital_status', 'spouse_name', 'mother_name', 'notes','experience','office_address'];
+    optionalFiled.forEach(x => {
+        updatedData[x] = body[x]
+    });
 
+    if (req.files.pan_card && req.files.pan_card.length > 0) {
+        const result = await s3Helper.uploadFile(req.files.pan_card[0])               
+        await unlinkFile(req.files.pan_card[0].path)
+        if (ExistingCustomer.pan_card_bucket_key) {
+            await s3Helper.deleteFileFromBucket(ExistingCustomer.pan_card_bucket_key)
+        }
+        updatedData.pan_card = result.Location
+        updatedData.pan_card_bucket_key = result.Key
+    }
+    if (req.files.aadhar_card && req.files.aadhar_card.length > 0) {
+        const result = await s3Helper.uploadFile(req.files.aadhar_card[0])               
+        await unlinkFile(req.files.aadhar_card[0].path)
+        if (ExistingCustomer.aadhar_card_bucket_key) {
+            await s3Helper.deleteFileFromBucket(ExistingCustomer.aadhar_card_bucket_key)
+        }
+        updatedData.aadhar_card = result.Location
+        updatedData.aadhar_card_bucket_key = result.Key
+    }
+    if (req.files.residential_latest_bill && req.files.residential_latest_bill.length > 0) {
+        const result = await s3Helper.uploadFile(req.files.residential_latest_bill[0])               
+        await unlinkFile(req.files.residential_latest_bill[0].path)
+        if (ExistingCustomer.residential_latest_bill_bucket_key) {
+            await s3Helper.deleteFileFromBucket(ExistingCustomer.residential_latest_bill_bucket_key)
+        }
+        updatedData.residential_latest_bill = result.Location
+        updatedData.residential_latest_bill_bucket_key = result.Key
+    }
+    if (req.files.property_tax_receipt && req.files.property_tax_receipt.length > 0) {
+        const result = await s3Helper.uploadFile(req.files.property_tax_receipt[0])               
+        await unlinkFile(req.files.property_tax_receipt[0].path)
+        if (ExistingCustomer.property_tax_receipt_bucket_key) {
+            await s3Helper.deleteFileFromBucket(ExistingCustomer.property_tax_receipt_bucket_key)
+        }
+        updatedData.property_tax_receipt = result.Location
+        updatedData.property_tax_receipt_bucket_key = result.Key
+    }
+    if (req.files.passport_photo && req.files.passport_photo.length > 0) {
+        const result = await s3Helper.uploadFile(req.files.passport_photo[0])               
+        await unlinkFile(req.files.passport_photo[0].path)
+        if (ExistingCustomer.passport_photo_bucket_key) {
+            await s3Helper.deleteFileFromBucket(ExistingCustomer.passport_photo_bucket_key)
+        }
+        updatedData.passport_photo = result.Location
+        updatedData.passport_photo_bucket_key = result.Key
+    }
+    await CustomerModel.update(updatedData, { where: { id: id } });
+    return true
+}
+let deleteCustomer = async (adminid, req,id) => {
+    if(!id)
+    {
+        throw new BadRequestError("Invalid Record");
+    }
+    let ExistingCustomer = await CustomerModel.findOne({
+        where: {id:id},        
+        order: [['id', 'DESC']],
+        raw: true
+    });
+    if(!ExistingCustomer)
+    {
+        throw new BadRequestError("Invalid Record");
+    }
+    await CustomerModel.destroy({ where: { id: id } });
+    return true
+
+}
+let getSingleCustomer = async (adminid, req,id) => {
+    if(!id)
+    {
+        throw new BadRequestError("Invalid Record");
+    }
+    let ExistingCustomer = await CustomerModel.findOne({
+        where: {id:id},        
+        order: [['id', 'DESC']],
+        raw: true
+    });
+    
+    return ExistingCustomer
+
+}
 module.exports = {
     addCustomer: addCustomer,
-    getCustomer:getCustomer
+    getCustomer:getCustomer,
+    deleteCustomer:deleteCustomer,
+    updateCustomer:updateCustomer,
+    getSingleCustomer:getSingleCustomer
 
 };
